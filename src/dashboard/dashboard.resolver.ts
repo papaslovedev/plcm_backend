@@ -3,6 +3,8 @@ import { UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.module';
 import { AdminGuard } from '../auth/admin.guard';
 
+@ObjectType() class AdminNewsItem { @Field() id!:string; @Field() category!:string; @Field() title!:string; @Field() excerpt!:string; @Field() image!:string; @Field() tag!:string; @Field() featured!:boolean; @Field() published!:boolean; @Field() createdAt!:Date; }
+@InputType() class NewsInput { @Field() category!:string; @Field() title!:string; @Field() excerpt!:string; @Field() image!:string; @Field() tag!:string; @Field() featured!:boolean; @Field() published!:boolean; }
 @ObjectType() class ContactItem { @Field(() => ID) id!: string; @Field() name!: string; @Field() email!: string; @Field({ nullable:true }) phone?: string; @Field({ nullable:true }) subject?: string; @Field({ nullable:true }) country?: string; @Field() message!: string; @Field() status!: string; @Field() createdAt!: Date; }
 @ObjectType() class SponsorItem { @Field(() => ID) id!: string; @Field() name!: string; @Field() email!: string; @Field({nullable:true}) phone?: string; @Field({nullable:true}) country?: string; @Field({nullable:true}) amount?: string; @Field({nullable:true}) frequency?: string; @Field({nullable:true}) message?: string; @Field() status!: string; @Field() createdAt!: Date; }
 @ObjectType() class SubscriberItem { @Field(() => ID) id!: string; @Field() email!: string; @Field() status!: string; @Field() createdAt!: Date; }
@@ -13,6 +15,10 @@ import { AdminGuard } from '../auth/admin.guard';
 @UseGuards(AdminGuard)
 export class DashboardResolver {
  constructor(private db: PrismaService) {}
+ @Query(() => [AdminNewsItem]) adminNews() { return this.db.newsPost.findMany({orderBy:{createdAt:'desc'}}); }
+ @Mutation(() => AdminNewsItem) createNews(@Args('input') input:NewsInput) { return this.db.newsPost.create({data:input}); }
+ @Mutation(() => AdminNewsItem) updateNews(@Args('id') id:string,@Args('input') input:NewsInput) { return this.db.newsPost.update({where:{id},data:input}); }
+ @Mutation(() => Boolean) async deleteNews(@Args('id') id:string) { await this.db.newsPost.delete({where:{id}}); return true; }
  @Query(() => Overview) async adminOverview() { const [contacts,sponsors,subscribers,newContacts,newSponsors,newSubscribers]=await Promise.all([this.db.contactMessage.count(),this.db.sponsorInquiry.count(),this.db.newsletterSubscriber.count(),this.db.contactMessage.count({where:{status:'NEW'}}),this.db.sponsorInquiry.count({where:{status:'NEW'}}),this.db.newsletterSubscriber.count({where:{status:'NEW'}})]); return {contacts,sponsors,subscribers,newContacts,newSponsors,newSubscribers}; }
  @Query(() => [ContactItem]) adminContacts() { return this.db.contactMessage.findMany({orderBy:{createdAt:'desc'}}); }
  @Query(() => [SponsorItem]) adminSponsors() { return this.db.sponsorInquiry.findMany({orderBy:{createdAt:'desc'}}); }
