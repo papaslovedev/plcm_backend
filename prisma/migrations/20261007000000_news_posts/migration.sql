@@ -1,0 +1,2 @@
+CREATE TABLE "NewsPost" ("id" TEXT NOT NULL, "category" TEXT NOT NULL, "title" TEXT NOT NULL, "excerpt" TEXT NOT NULL, "image" TEXT NOT NULL, "tag" TEXT NOT NULL, "featured" BOOLEAN NOT NULL DEFAULT false, "published" BOOLEAN NOT NULL DEFAULT true, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "NewsPost_pkey" PRIMARY KEY ("id"));
+CREATE INDEX "NewsPost_published_createdAt_idx" ON "NewsPost"("published", "createdAt");
