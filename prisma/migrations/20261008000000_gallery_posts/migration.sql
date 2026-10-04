@@ -1,0 +1,2 @@
+CREATE TABLE "GalleryPost" ("id" TEXT NOT NULL, "src" TEXT NOT NULL, "title" TEXT NOT NULL, "caption" TEXT NOT NULL, "category" TEXT NOT NULL, "position" INTEGER NOT NULL DEFAULT 0, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "GalleryPost_pkey" PRIMARY KEY ("id"));
+CREATE INDEX "GalleryPost_position_createdAt_idx" ON "GalleryPost"("position", "createdAt");
