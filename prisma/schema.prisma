@@ -52,3 +52,17 @@ model SiteSettings {
   location  String   @default("Naama Village, Mityana, Uganda")
   updatedAt DateTime @updatedAt
 }
+
+model NewsPost {
+ id String @id @default(cuid())
+ category String
+ title String
+ excerpt String @db.Text
+ image String
+ tag String
+ featured Boolean @default(false)
+ published Boolean @default(true)
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ @@index([published, createdAt])
+}
