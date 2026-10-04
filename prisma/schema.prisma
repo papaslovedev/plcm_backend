@@ -38,6 +38,7 @@ model SponsorInquiry {
 model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique
+  status    String   @default("NEW")
   createdAt DateTime @default(now())
 }
 
