@@ -19,7 +19,43 @@ export class DashboardResolver {
  @Mutation(() => AdminNewsItem) createNews(@Args('input') input:NewsInput) { return this.db.newsPost.create({data:input}); }
  @Mutation(() => AdminNewsItem) updateNews(@Args('id') id:string,@Args('input') input:NewsInput) { return this.db.newsPost.update({where:{id},data:input}); }
  @Mutation(() => Boolean) async deleteNews(@Args('id') id:string) { await this.db.newsPost.delete({where:{id}}); return true; }
- @Mutation(() => String) async uploadNewsImage(@Args('fileName') fileName:string,@Args('base64') base64:string) { const token=process.env.GITHUB_TOKEN; if(!token) throw new Error('Image uploads are not configured. Set GITHUB_TOKEN on the backend Railway service.'); const safe=fileName.normalize('NFKD').replace(/[^a-zA-Z0-9._-]/g,'-').replace(/-+/g,'-').slice(-100); const ext=safe.split('.').pop()?.toLowerCase(); if(!['jpg','jpeg','png','webp','gif'].includes(ext||'')) throw new Error('Use a JPG, PNG, WEBP or GIF image.'); if(!base64||base64.length>8500000) throw new Error('Image must be smaller than approximately 6 MB.'); const owner=process.env.GITHUB_OWNER||'papaslovedev'; const repo=process.env.GITHUB_REPO||'plcm_frontend'; const branch=process.env.GITHUB_BRANCH||'main'; const path='public/images/news-'+Date.now()+'-'+safe; const response=await fetch('https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path,{method:'PUT',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'},body:JSON.stringify({message:'Upload news image '+safe,content:base64.replace(/^data:image\\/[a-zA-Z0-9.+-]+;base64,/,'').replace(/\\s/g,''),branch})}); const result:any=await response.json(); if(!response.ok) throw new Error(result.message||'GitHub image upload failed.'); return 'https://raw.githubusercontent.com/'+owner+'/'+repo+'/'+branch+'/'+path; }
+ @Mutation(() => String)
+ async uploadNewsImage(
+  @Args('fileName') fileName: string,
+  @Args('base64') base64: string,
+ ): Promise<string> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) throw new Error('Image uploads are not configured. Set GITHUB_TOKEN on the backend Railway service.');
+
+  const safe = fileName.normalize('NFKD').replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-').slice(-100);
+  const ext = safe.split('.').pop()?.toLowerCase();
+  if (!['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext || '')) {
+   throw new Error('Use a JPG, PNG, WEBP or GIF image.');
+  }
+  if (!base64 || base64.length > 8500000) {
+   throw new Error('Image must be smaller than approximately 6 MB.');
+  }
+
+  const owner = process.env.GITHUB_OWNER || 'papaslovedev';
+  const repo = process.env.GITHUB_REPO || 'plcm_frontend';
+  const branch = process.env.GITHUB_BRANCH || 'main';
+  const path = 'public/images/news-' + Date.now() + '-' + safe;
+  const content = base64.replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/, '').replace(/\s/g, '');
+
+  const response = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+   method: 'PUT',
+   headers: {
+    Authorization: 'Bearer ' + token,
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json',
+   },
+   body: JSON.stringify({ message: 'Upload news image ' + safe, content, branch }),
+  });
+  const result: any = await response.json();
+  if (!response.ok) throw new Error(result.message || 'GitHub image upload failed.');
+  return 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + branch + '/' + path;
+ }
  @Query(() => Overview) async adminOverview() { const [contacts,sponsors,subscribers,newContacts,newSponsors,newSubscribers]=await Promise.all([this.db.contactMessage.count(),this.db.sponsorInquiry.count(),this.db.newsletterSubscriber.count(),this.db.contactMessage.count({where:{status:'NEW'}}),this.db.sponsorInquiry.count({where:{status:'NEW'}}),this.db.newsletterSubscriber.count({where:{status:'NEW'}})]); return {contacts,sponsors,subscribers,newContacts,newSponsors,newSubscribers}; }
  @Query(() => [ContactItem]) adminContacts() { return this.db.contactMessage.findMany({orderBy:{createdAt:'desc'}}); }
  @Query(() => [SponsorItem]) adminSponsors() { return this.db.sponsorInquiry.findMany({orderBy:{createdAt:'desc'}}); }
