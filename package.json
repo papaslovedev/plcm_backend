@@ -29,7 +29,8 @@
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "@apollo/server": "^5.0.0"
+    "@apollo/server": "^5.0.0",
+    "resend": "^4.8.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",
