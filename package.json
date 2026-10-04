@@ -14,10 +14,10 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@nestjs/apollo": "^13.2.0",
+    "@nestjs/apollo": "^13.4.5",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/graphql": "^13.2.0",
+    "@nestjs/graphql": "^13.4.5",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.19.0",
     "bcrypt": "^5.1.1",
@@ -28,7 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "@apollo/server": "^4.11.3"
+    "@apollo/server": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",
