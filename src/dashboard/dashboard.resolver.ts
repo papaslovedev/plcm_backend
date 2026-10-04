@@ -20,6 +20,6 @@ export class DashboardResolver {
  @Mutation(() => SubscriberItem) updateSubscriberStatus(@Args('id') id:string,@Args('status') status:string) { if (!['APPROVED','DECLINED'].includes(status)) throw new Error('Invalid subscriber status'); return this.db.newsletterSubscriber.update({where:{id},data:{status}}); }
  @Query(() => SettingsItem) async adminSettings() { return this.db.siteSettings.upsert({where:{id:'main'},create:{id:'main'},update:{}}); }
  @Mutation(() => ContactItem) updateContactStatus(@Args('id') id:string,@Args('status') status:string) { if (!['HANDLED','IGNORED','NEW'].includes(status)) throw new Error('Invalid contact status'); return this.db.contactMessage.update({where:{id},data:{status}}); }
- @Mutation(() => SponsorItem) updateSponsorStatus(@Args('id') id:string,@Args('status') status:string) { return this.db.sponsorInquiry.update({where:{id},data:{status}}); }
+ @Mutation(() => SponsorItem) updateSponsorStatus(@Args('id') id:string,@Args('status') status:string) { if (!['ATTENDED','ARCHIVED','NEW'].includes(status)) throw new Error('Invalid sponsor inquiry status'); return this.db.sponsorInquiry.update({where:{id},data:{status}}); }
  @Mutation(() => SettingsItem) saveAdminSettings(@Args('input') input:SettingsInput) { return this.db.siteSettings.upsert({where:{id:'main'},create:{id:'main',...input},update:input}); }
 }
