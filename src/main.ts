@@ -4,7 +4,23 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({ origin: (process.env.FRONTEND_ORIGIN || '').split(',').map(v => v.trim()).filter(Boolean), credentials: true });
+  const configuredOrigins = (process.env.FRONTEND_ORIGIN || 'https://plcm.up.railway.app')
+    .split(',')
+    .map((origin) => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+  app.enableCors({
+    origin: configuredOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Apollo-Require-Preflight',
+      'X-Apollo-Operation-Name',
+    ],
+  });
+
   app.setGlobalPrefix('api');
   await app.listen(process.env.PORT || 4000, '0.0.0.0');
 }
