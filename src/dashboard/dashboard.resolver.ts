@@ -39,7 +39,7 @@ export class DashboardResolver {
   const ext=safe.split(".").pop()?.toLowerCase();
   if(!["jpg","jpeg","png","webp","gif"].includes(ext||"")) throw new Error("Use a JPG, PNG, WEBP or GIF image.");
   if(!base64) throw new Error("No image data was received.");
-  const content=base64.replace(/^data:image\\/[a-zA-Z0-9.+-]+;base64,/,"").replace(/\\s/g,"");
+  const content=base64.replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/,"").replace(/\s/g,"");
   if(!content) throw new Error("The image data is empty.");
   if(content.length>9500000) throw new Error("Image is too large for this upload. Please choose an image under 6 MB.");
   const owner=process.env.GITHUB_OWNER||"papaslovedev";
