@@ -50,6 +50,12 @@ model SiteSettings {
   phone     String   @default("+256 774615784")
   alternatePhone String @default("+256709196703")
   location  String   @default("Naama Village, Mityana, Uganda")
+  whatsapp  String   @default("")
+  instagram String   @default("")
+  facebook  String   @default("")
+  tiktok    String   @default("")
+  youtube  String   @default("")
+  threads   String   @default("")
   updatedAt DateTime @updatedAt
 }
 
