@@ -10,9 +10,9 @@ import { AdminGuard } from '../auth/admin.guard';
 @ObjectType() class ContactItem { @Field(() => ID) id!: string; @Field() name!: string; @Field() email!: string; @Field({ nullable:true }) phone?: string; @Field({ nullable:true }) subject?: string; @Field({ nullable:true }) country?: string; @Field() message!: string; @Field() status!: string; @Field() createdAt!: Date; }
 @ObjectType() class SponsorItem { @Field(() => ID) id!: string; @Field() name!: string; @Field() email!: string; @Field({nullable:true}) phone?: string; @Field({nullable:true}) country?: string; @Field({nullable:true}) amount?: string; @Field({nullable:true}) frequency?: string; @Field({nullable:true}) message?: string; @Field() status!: string; @Field() createdAt!: Date; }
 @ObjectType() class SubscriberItem { @Field(() => ID) id!: string; @Field() email!: string; @Field() status!: string; @Field() createdAt!: Date; }
-@ObjectType() class SettingsItem { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; }
+@ObjectType() class SettingsItem { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; @Field() whatsapp!: string; @Field() instagram!: string; @Field() facebook!: string; @Field() tiktok!: string; @Field() youtube!: string; @Field() threads!: string; }
 @ObjectType() class Overview { @Field(() => Int) contacts!: number; @Field(() => Int) sponsors!: number; @Field(() => Int) subscribers!: number; @Field(() => Int) newContacts!: number; @Field(() => Int) newSponsors!: number; @Field(() => Int) newSubscribers!: number; }
-@InputType() class SettingsInput { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; }
+@InputType() class SettingsInput { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; @Field() whatsapp!: string; @Field() instagram!: string; @Field() facebook!: string; @Field() tiktok!: string; @Field() youtube!: string; @Field() threads!: string; }
 @Resolver()
 @UseGuards(AdminGuard)
 export class DashboardResolver {
