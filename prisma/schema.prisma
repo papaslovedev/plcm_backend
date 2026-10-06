@@ -56,6 +56,23 @@ model SiteSettings {
   tiktok    String   @default("")
   youtube  String   @default("")
   threads   String   @default("")
+  mtnNumber String @default("+256774615784")
+  mtnAccountName String @default("JJUUKO SHAFIC")
+  airtelNumber String @default("+256709196703")
+  airtelAccountName String @default("JJUUKO SHAFIC")
+  equityBankName String @default("Equity Bank Uganda")
+  equityAccountName String @default("JJUUKO SHAFIC")
+  equityAccountNumber String @default("1016102900637")
+  equitySwiftCode String @default("EQBLUGKA")
+  equityBranchName String @default("Mityana")
+  westernUnionReceiverName String @default("JJUUKO SHAFIC")
+  westernUnionCountry String @default("Uganda")
+  westernUnionCity String @default("Kampala")
+  westernUnionTelephone String @default("+256774615784")
+  remitlyRecipientName String @default("JJUUKO SHAFIC")
+  remitlyCountry String @default("Uganda")
+  remitlyCity String @default("Mityana")
+  remitlyTelephone String @default("+256774615784")
   updatedAt DateTime @updatedAt
 }
 
