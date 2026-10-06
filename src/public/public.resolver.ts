@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.module';
 import { Resend } from 'resend';
 @InputType() class ContactInput { @Field() name!: string; @Field() email!: string; @Field({nullable:true}) phone?: string; @Field({nullable:true}) subject?: string; @Field({nullable:true}) country?: string; @Field() message!: string; }
 @InputType() class SponsorInput { @Field() name!: string; @Field() email!: string; @Field({nullable:true}) phone?: string; @Field({nullable:true}) country?: string; @Field({nullable:true}) amount?: string; @Field({nullable:true}) frequency?: string; @Field({nullable:true}) message?: string; }
-@ObjectType() class PublicSiteSettings { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; }
+@ObjectType() class PublicSiteSettings { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; @Field() whatsapp!: string; @Field() instagram!: string; @Field() facebook!: string; @Field() tiktok!: string; @Field() youtube!: string; @Field() threads!: string; }
 @ObjectType() class NewsPostItem { @Field() id!: string; @Field() category!: string; @Field() title!: string; @Field() excerpt!: string; @Field() image!: string; @Field() tag!: string; @Field() featured!: boolean; @Field() createdAt!: Date; }
 @ObjectType() class GalleryPostItem { @Field() id!:string; @Field() src!:string; @Field() title!:string; @Field() caption!:string; @Field() category!:string; @Field() position!:number; }
 @ObjectType() class PublicResult { @Field() success!: boolean; }
