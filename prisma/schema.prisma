@@ -84,3 +84,10 @@ model GalleryPost {
  updatedAt DateTime @updatedAt
  @@index([position, createdAt])
 }
+
+model AdminAccount {
+  id String @id @default("main")
+  email String @unique
+  passwordHash String
+  updatedAt DateTime @updatedAt
+}
