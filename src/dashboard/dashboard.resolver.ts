@@ -33,8 +33,8 @@ export class DashboardResolver {
  @Mutation(() => AdminNewsItem) updateNews(@Args('id') id:string,@Args('input') input:NewsInput) { return this.db.newsPost.update({where:{id},data:input}); }
  @Mutation(() => Boolean) async deleteNews(@Args('id') id:string) { await this.db.newsPost.delete({where:{id}}); return true; }
  private async uploadImageToGitHub(fileName:string, base64:string, prefix:"news"|"gallery"):Promise<string> {
-  const token=process.env.GITHUB_TOKEN;
-  if(!token) throw new Error("GitHub image uploads are not configured on the backend. Add GITHUB_TOKEN to the Railway backend environment.");
+  const token=(process.env.GITHUB_TOKEN||process.env.GITHUB_PAT||process.env.GITHUB_API_TOKEN||"").trim();
+  if(!token) throw new Error("GitHub image uploads are not configured. Railway backend is missing GITHUB_TOKEN (a token with Contents: Read and write access to papaslovedev/plcm_frontend).");
   const safe=fileName.normalize("NFKD").replace(/[^a-zA-Z0-9._-]/g,"-").replace(/-+/g,"-").slice(-100);
   const ext=safe.split(".").pop()?.toLowerCase();
   if(!["jpg","jpeg","png","webp","gif"].includes(ext||"")) throw new Error("Use a JPG, PNG, WEBP or GIF image.");
@@ -46,13 +46,18 @@ export class DashboardResolver {
   const repo=process.env.GITHUB_REPO||"plcm_frontend";
   const branch=process.env.GITHUB_BRANCH||"main";
   const path="public/images/"+prefix+"-"+Date.now()+"-"+safe;
-  const response=await fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path,{
+  const apiUrl="https://api.github.com/repos/"+encodeURIComponent(owner)+"/"+encodeURIComponent(repo)+"/contents/"+path.split("/").map(encodeURIComponent).join("/");
+  const response=await fetch(apiUrl,{
    method:"PUT",
    headers:{Authorization:"Bearer "+token,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"},
    body:JSON.stringify({message:"Upload "+prefix+" image "+safe,content,branch}),
   });
   const result:any=await response.json();
-  if(!response.ok) throw new Error("GitHub image upload failed ("+response.status+"): "+(result.message||"Unknown GitHub error."));
+  if(!response.ok) {
+   const detail=result?.message||"Unknown GitHub error.";
+   const hint=response.status===401?" Check that GITHUB_TOKEN is valid.":response.status===403?" Check that the token has Contents: Read and write permission and that the repository/branch allows direct writes.":response.status===404?" Check GITHUB_OWNER, GITHUB_REPO and token repository access.":"";
+   throw new Error("GitHub image upload failed ("+response.status+"): "+detail+hint);
+  }
   return "https://raw.githubusercontent.com/"+owner+"/"+repo+"/"+branch+"/"+path;
  }
  @Mutation(() => String)
