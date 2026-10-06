@@ -77,6 +77,5 @@ export class DashboardResolver {
  @Mutation(() => ContactItem) updateContactStatus(@Args('id') id:string,@Args('status') status:string) { if (!['HANDLED','IGNORED','NEW'].includes(status)) throw new Error('Invalid contact status'); return this.db.contactMessage.update({where:{id},data:{status}}); }
  @Mutation(() => SponsorItem) updateSponsorStatus(@Args('id') id:string,@Args('status') status:string) { if (!['ATTENDED','ARCHIVED','NEW'].includes(status)) throw new Error('Invalid sponsor inquiry status'); return this.db.sponsorInquiry.update({where:{id},data:{status}}); }
  @Mutation(() => SettingsItem) saveAdminSettings(@Args('input') input:SettingsInput) { return this.db.siteSettings.upsert({where:{id:'main'},create:{id:'main',...input},update:input}); }
-}\n @Mutation(() => SettingsItem) saveOfflinePaymentOptions(@Args('input') input:OfflinePaymentInput) { return this.db.siteSettings.upsert({where:{id:'main'},create:{id:'main',...input},update:input}); }
  @Mutation(() => SettingsItem) saveOfflinePaymentOptions(@Args('input') input:OfflinePaymentInput) { return this.db.siteSettings.upsert({where:{id:'main'},create:{id:'main',...input},update:input}); }
 }
