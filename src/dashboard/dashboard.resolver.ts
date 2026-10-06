@@ -13,6 +13,12 @@ import { AdminGuard } from '../auth/admin.guard';
 @ObjectType() class SettingsItem { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; @Field() whatsapp!: string; @Field() instagram!: string; @Field() facebook!: string; @Field() tiktok!: string; @Field() youtube!: string; @Field() threads!: string; @Field() mtnNumber!: string; @Field() mtnAccountName!: string; @Field() airtelNumber!: string; @Field() airtelAccountName!: string; @Field() equityBankName!: string; @Field() equityAccountName!: string; @Field() equityAccountNumber!: string; @Field() equitySwiftCode!: string; @Field() equityBranchName!: string; @Field() westernUnionReceiverName!: string; @Field() westernUnionCountry!: string; @Field() westernUnionCity!: string; @Field() westernUnionTelephone!: string; @Field() remitlyRecipientName!: string; @Field() remitlyCountry!: string; @Field() remitlyCity!: string; @Field() remitlyTelephone!: string; }
 @ObjectType() class Overview { @Field(() => Int) contacts!: number; @Field(() => Int) sponsors!: number; @Field(() => Int) subscribers!: number; @Field(() => Int) newContacts!: number; @Field(() => Int) newSponsors!: number; @Field(() => Int) newSubscribers!: number; }
 @InputType() class SettingsInput { @Field() ministryName!: string; @Field() email!: string; @Field() phone!: string; @Field() alternatePhone!: string; @Field() location!: string; @Field() whatsapp!: string; @Field() instagram!: string; @Field() facebook!: string; @Field() tiktok!: string; @Field() youtube!: string; @Field() threads!: string; }
+@InputType() class OfflinePaymentInput {
+ @Field() mtnNumber!: string; @Field() mtnAccountName!: string; @Field() airtelNumber!: string; @Field() airtelAccountName!: string;
+ @Field() equityBankName!: string; @Field() equityAccountName!: string; @Field() equityAccountNumber!: string; @Field() equitySwiftCode!: string; @Field() equityBranchName!: string;
+ @Field() westernUnionReceiverName!: string; @Field() westernUnionCountry!: string; @Field() westernUnionCity!: string; @Field() westernUnionTelephone!: string;
+ @Field() remitlyRecipientName!: string; @Field() remitlyCountry!: string; @Field() remitlyCity!: string; @Field() remitlyTelephone!: string;
+}
 @Resolver()
 @UseGuards(AdminGuard)
 export class DashboardResolver {
