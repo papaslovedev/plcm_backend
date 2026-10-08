@@ -46,6 +46,8 @@ model NewsletterSubscriber {
 model SiteSettings {
   id        String   @id @default("main")
   ministryName String @default("Papa’s Love Children Ministry")
+  campaignManagerName String @default("--------")
+  campaignLink String @default("#")
   email     String   @default("papaslovechildrenministry@gmail.com")
   phone     String   @default("+256 774615784")
   alternatePhone String @default("+256709196703")
